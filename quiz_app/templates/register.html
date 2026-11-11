@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register Account</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <div id="participant-box">
+            <h3>Participant Details</h3>
+            {{ p_form.as_p }}
+        </div>
+
+        <div id="moderator-box" style="display:none;">
+            <h3>Moderator Details</h3>
+            {{ m_form.as_p }}
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+
+    <script>
+        function showRoleBox() {
+            var role = document.querySelector('input[name="role"]:checked');
+            var pBox = document.getElementById('participant-box');
+            var mBox = document.getElementById('moderator-box');
+            
+            if (role && role.value == 'moderator') {
+                pBox.style.display = 'none';
+                mBox.style.display = 'block';
+                pBox.querySelectorAll('input, select').forEach(i => i.disabled = true);
+                mBox.querySelectorAll('input, select').forEach(i => i.disabled = false);
+            } else {
+                pBox.style.display = 'block';
+                mBox.style.display = 'none';
+                pBox.querySelectorAll('input, select').forEach(i => i.disabled = false);
+                mBox.querySelectorAll('input, select').forEach(i => i.disabled = true);
+            }
+        }
+        document.querySelectorAll('input[name="role"]').forEach(r => r.addEventListener('change', showRoleBox));
+        showRoleBox();
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ quiz.title }}</title>
+</head>
+<body>
+    <h2>Quiz: {{ quiz.title }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% for item in quiz_data %}
+            <p><strong>{{ item.question.question_text }}</strong></p>
+            {% for option in item.options %}
+                <label>
+                    <input type="radio" name="question_{{ item.question.id }}" value="{{ option.id }}">
+                    {{ option.option_text }}
+                </label><br>
+            {% endfor %}
+            <hr>
+        {% endfor %}
+        <button type="submit">Submit Quiz</button>
+    </form>
+</body>
+</html>
